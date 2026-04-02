@@ -32,7 +32,9 @@ CREATE TABLE staff_reviews (
   review_date DATE         NOT NULL,
   notes       TEXT
 );
+
 SHOW TABLES;
+
 -- ALTER ----------------------------------
 ALTER TABLE customer
 ADD COLUMN age TINYINT ;
@@ -60,12 +62,14 @@ DESCRIBE practice_customer;
 CREATE DATABASE practice_db;
 USE practice_db;
 SHOW TABLES;
+
 CREATE TABLE students (
   student_id INT PRIMARY KEY AUTO_INCREMENT,
   name VARCHAR(50),
   age INT,
   email VARCHAR(100)
 );
+
 INSERT INTO students (name, age, email)
 VALUES ('Sam', 25, 'sam@gmail.com');
 select* from students;
@@ -224,13 +228,14 @@ FROM rental;
 SELECT NOW();   -- current date & time
 SELECT CURDATE();  -- only date
 
--- 🔹 2. Extract Date Parts (from rental table)
+-- 2. Extract Date Parts (from rental table)
 
 SELECT rental_id,rental_date,
        YEAR(rental_date) AS year,
        MONTH(rental_date) AS month,
        DAY(rental_date) AS day
 FROM rental;
+
 -- date difference -----------------
 SELECT rental_id,rental_date, return_date,
        DATEDIFF(return_date, rental_date) AS rental_days
