@@ -1,0 +1,121 @@
+What is a Subquery?
+A subquery is a query written inside another query.
+The inner query runs first
+Its result is used by the outer query
+
+You usually use subqueries when:
+
+You need a value calculated from another table
+You want to filter results based on another query
+You want dynamic conditions instead of hardcoding values
+
+Where we use subqueries:
+
+WHERE → to filter data (most common)
+FROM → as a temporary table (derived table)
+SELECT → to return calculated values (less common)
+
+practice Query 
+1. Customers who have made payments
+
+Select first_name, last_name
+from customer 
+where customer_id in (
+  select customer_id from payment
+);
+
+Explanation:
+Inner query gets all customer_id from the payment table
+Outer query selects customers whose IDs match those
+In simple terms:
+Return customers who have at least one payment recorded.
+
+2. Films with rental rate above average
+SELECT title, rental_rate
+FROM film
+WHERE rental_rate > (
+  SELECT AVG(rental_rate)
+  FROM film
+);
+
+Explanation:
+Inner query calculates the average rental rate
+Outer query compares each film’s rental rate with that average
+In simple terms:
+Return films that cost more than the average film rental price.
+
+3. Customers with more than 30 rentals
+select customer_id, total_rental
+FROM (
+  SELECT customer_id, COUNT(*) AS total_rental
+  FROM rental
+  GROUP BY customer_id
+) AS rental_summary
+WHERE total_rental > 30;
+
+Explanation:
+Inner query groups rentals by customer and counts them
+Outer query filters customers with more than 30 rentals
+In simple terms:
+Find customers who rented more than 30 times.
+Note: This could also be done using HAVING without a subquery.
+
+4. Films that have never been rented
+SELECT title
+FROM film
+WHERE film_id NOT IN (
+  SELECT DISTINCT film_id
+  FROM inventory
+  WHERE inventory_id IN (
+    SELECT inventory_id FROM rental
+  )
+);
+
+Explanation:
+Innermost query gets all rented inventory IDs
+Middle query maps those to film IDs
+Outer query excludes those films
+In simple terms:
+Return films that were never rented by any customer.
+
+5. Customers who made at least one rental
+select customer_id, first_name, last_name
+from customer
+where customer_id in (
+  select customer_id from rental
+);
+
+Explanation:
+Inner query gets customers from rental table
+Outer query returns their details
+In simple terms:
+Return customers who have rented at least once.
+
+6. Films available in inventory
+select title, film_id 
+from film
+where film_id in (
+  select film_id from inventory
+);
+
+Explanation:
+Inner query gets film IDs present in inventory
+Outer query retrieves film details
+In simple terms:
+Return films that are physically available in stock.
+
+7. Customers who rented more than 5 films
+select customer_id, first_name, last_name
+from customer 
+where customer_id in (
+  select customer_id
+  from rental
+  group by customer_id
+  having count(rental_id) > 5
+);
+
+Explanation:
+Inner query groups rentals by customer and filters those with more than 5 rentals
+Outer query returns their details
+In simple terms:
+Return customers who rented more than 5 times.
