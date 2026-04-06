@@ -9,11 +9,38 @@ You need a value calculated from another table
 You want to filter results based on another query
 You want dynamic conditions instead of hardcoding values
 
+
 Where we use subqueries:
 
 WHERE → to filter data (most common)
 FROM → as a temporary table (derived table)
 SELECT → to return calculated values (less common)
+
+Types of Subqueries
+1. Single-Row Subquery
+Returns exactly one row and one value
+Typically used with comparison operators (=, >, <)
+Suitable when the result is expected to be unique
+
+2. Multi-Row Subquery
+Returns multiple rows
+Used with operators like IN, ANY, ALL
+Helps filter data against a set of values
+
+3. Correlated Subquery
+Executes once for each row processed by the outer query
+Depends on values from the outer query
+Commonly used with EXISTS
+
+4. Scalar Subquery
+Returns a single value (one row, one column)
+Can be used in the SELECT clause
+Often used for calculations or aggregated values
+
+5. Derived Table (Subquery in FROM)
+Used in the FROM clause
+Acts as a temporary table for further querying
+Helps break complex queries into manageable parts
 
 practice Query 
 1. Customers who have made payments
