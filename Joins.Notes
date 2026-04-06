@@ -1,0 +1,150 @@
+What is a JOIN?
+A JOIN is used to combine data from two or more tables using a related column.
+Why we use JOINs:
+•	Data is stored in separate tables (normalized) 
+•	JOIN helps bring related data together 
+•	Avoids duplication and keeps data structured 
+________________________________________
+Types of JOINs
+1. INNER JOIN
+•	Returns only matching records from both tables 
+•	If there is no match → row is excluded 
+Use when: you only want valid, related data
+________________________________________
+2. LEFT JOIN (LEFT OUTER JOIN)
+•	Returns all records from the left table 
+•	Matching data from the right table 
+•	If no match → NULL 
+Use when: you want all data from one table even if no match exists
+________________________________________
+3. RIGHT JOIN (not used here)
+•	Opposite of LEFT JOIN 
+•	Returns all records from the right table 
+________________________________________
+4. FULL JOIN (not in MySQL directly)
+•	Returns all records from both tables 
+•	Non-matching rows show NULL 
+________________________________________
+ 
+Query Explanations
+1. Customer basic details
+select first_name, last_name, email, store_id
+from customer;
+Explanation:
+Simple query. No join used. Fetches data from one table.
+________________________________________
+2. Film title with language
+select f.title , l.name as language
+from film f
+join language l
+on f.language_id = l.language_id;
+Type: INNER JOIN
+Explanation:
+•	Matches film with its language 
+•	Only shows films that have a valid language 
+________________________________________
+3. Customer with payment amount
+select c.first_name, c.last_name , p.amount as payment_amt
+from customer c
+join payment p
+on c.customer_id = p.customer_id;
+Type: INNER JOIN
+Explanation:
+•	Shows customers who made payments 
+•	Each payment appears as a separate row 
+________________________________________
+4. Rental with customer name
+select r.rental_id, r.rental_date, c.first_name, c.last_name 
+from rental r
+join customer c
+ON r.customer_id = c.customer_id;
+Type: INNER JOIN
+Explanation:
+•	Links rental with customer 
+•	Shows who rented and when 
+________________________________________
+5. Customer and films they rented
+SELECT c.first_name, c.last_name, f.title
+FROM customer c
+JOIN rental r ON c.customer_id = r.customer_id
+JOIN inventory i ON r.inventory_id = i.inventory_id
+JOIN film f ON i.film_id = f.film_id;
+Type: Multiple INNER JOINs
+Explanation:
+•	Connects 4 tables step by step 
+•	Customer → Rental → Inventory → Film 
+________________________________________
+6. All customers with rentals (including none)
+select c.customer_id, c.first_name, c.last_name, r.rental_id
+from customer c
+left join rental r
+on c.customer_id = r.customer_id;
+Type: LEFT JOIN
+Explanation:
+•	Keeps all customers 
+•	Shows NULL for customers with no rentals 
+________________________________________
+7. Films with inventory IDs
+select f.title, i.inventory_id
+from film f
+join inventory i
+on f.film_id = i.film_id;
+Type: INNER JOIN
+Explanation:
+•	Shows films that exist in inventory 
+•	Excludes films not in stock 
+________________________________________
+8. Actors and films
+select a.actor_id, a.first_name, a.last_name, f.title
+from actor a
+left join film_actor fa ON a.actor_id = fa.actor_id
+left join film f ON fa.film_id = f.film_id;
+Type: LEFT JOIN
+Explanation:
+•	Keeps all actors 
+•	Shows films if available 
+•	NULL if actor has no films 
+________________________________________
+9. Customers with film titles (including none)
+select c.customer_id, c.first_name, c.last_name, f.title
+from customer c
+left join rental r ON c.customer_id = r.customer_id
+left join inventory i ON r.inventory_id = i.inventory_id
+left join film f ON i.film_id = f.film_id;
+Type: Multiple LEFT JOINs
+Explanation:
+•	Keeps all customers 
+•	Adds film details if available 
+________________________________________
+10. Film rental count
+select f.title, count(r.rental_id) as rented_film_count
+from film f
+left join inventory i on f.film_id = i.film_id
+left join rental r on i.inventory_id = r.inventory_id
+GROUP BY f.film_id, f.title;
+Type: LEFT JOIN + GROUP BY
+Explanation:
+•	Counts how many times each film was rented 
+•	Includes films with zero rentals 
+________________________________________
+11. Customers who never rented
+select c.customer_id, c.first_name, c.last_name
+from customer c
+left join rental r ON c.customer_id = r.customer_id
+where r.rental_id is null;
+Type: LEFT JOIN
+Explanation:
+•	Finds customers with no matching rentals 
+________________________________________
+12. Top 5 customers by rentals
+select c.customer_id, c.first_name, c.last_name, count(r.rental_id) as rental_count
+from customer c
+join rental r on c.customer_id = r.customer_id
+group by c.customer_id, c.first_name, c.last_name
+order by rental_count desc
+limit 5;
+Type: INNER JOIN + GROUP BY
+Explanation:
+•	Counts rentals per customer 
+•	Sorts highest to lowest 
+•	Returns top 5
