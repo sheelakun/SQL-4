@@ -8,26 +8,26 @@ WITH cte_name AS (
 )
 SELECT ...
 FROM cte_name;
-
+----------------------------------------------------------------------------------------------
 => Why CTE is used
 
 CTEs were introduced to improve query structure over subqueries.
-
+-----------------------------------------------------------------------------------------
 => Limitations of subqueries:
 Hard to read when nested
 Difficult to debug
 Cannot reuse logic easily
-
+----------------------------------------------------------------------------------------------
 => Advantages of CTE:
 Improves readability
 Breaks query into logical steps
 Makes complex queries easier to manage
 Supports multi-step transformations
-
+--------------------------------------------------------------------------------------------------
 =>Key Concept
 CTE = preparation step
 Main query = final result
-
+-------------------------------------------------------------------------------------------------------
 PRACTICE-QUESTIONS
 1-- Find films whose rental_rate is higher than average
 
@@ -40,7 +40,7 @@ where rental_rate > (select avg_rental from  avge_rent);
 => Explanation:
 The CTE calculates the average rental rate of all films and stores it as avg_value.
 The main query retrieves film titles and rental rates where the rental rate is greater than the calculated average.
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 2=> -- Find customers who spent more than 200.
 WITH total_amt AS (
 SELECT customer_id, SUM(amount) AS spent_amt
@@ -131,7 +131,44 @@ Multiple CTEs can be used for layered calculations
 It improves readability and maintainability of SQL queries
 
 
+----------------------Recursive CTE --------------------------------------------------------------------------------------------------------------
 
+A Recursive CTE is a type of Common Table Expression that references itself to repeatedly execute a query until a specified condition is met.
+
+It is mainly used for:
+
+generating sequences (numbers, dates)
+working with hierarchical data (parent-child relationships)
+
+Structure
+A recursive CTE has two parts:
+Base case – starting point
+Recursive part – repeats the logic
+Both parts are combined using UNION ALL.
+
+Key Points
+Uses WITH RECURSIVE
+Must have a stopping condition
+Runs repeatedly until the condition becomes false
+
+Example Query
+
+WITH RECURSIVE numbers AS (
+SELECT 1 AS n   -- base case
+
+    UNION ALL
+
+    SELECT n + 1
+    FROM numbers
+    WHERE n < 5     -- stop condition
+)
+SELECT * FROM numbers;
+
+Explanation
+The query starts with 1 (base case)
+Then it keeps adding 1 to the previous value
+It repeats until n < 5 becomes false
+Final output: 1, 2, 3, 4, 5
 
 
 
