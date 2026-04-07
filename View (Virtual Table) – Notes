@@ -1,0 +1,91 @@
+\\-----------------------Definition--------------------------------------------
+
+A View is a virtual table created by saving a SQL query.
+It does not store data. Instead, it shows data dynamically when queried.
+
+------How it Works----------------------------------------------------------------
+
+A view stores only the query, not the actual data.
+
+When the view is created → only the query is saved
+When the view is used → the query runs again
+The result appears like a table
+
+This means the data is always current and updated.
+
+---------------Key Idea---------------------------------------
+
+A view is like a saved query that behaves like a table.
+
+---------Why Views are Used-----------------------------------------
+To simplify complex queries
+To reuse logic without rewriting SQL
+To hide complex joins and calculations
+To control what data users can see
+
+--------------------Abstraction -----------------------------------------
+
+Views provide abstraction, meaning:
+
+Users do not see the actual table structure
+Only selected columns are visible
+Complex logic is hidden
+
+---------------Important Points-----------------------------------------------
+Views do not store data
+Data is fetched every time the view is used
+Always shows latest data
+Can be used like a normal table
+
+------------------Syntax----------------------------------------
+Create View
+CREATE VIEW view_name AS
+
+SELECT ...
+Use View
+SELECT * FROM view_name;
+
+Drop View
+DROP VIEW view_name;
+
+-----------Create View--------------------
+
+CREATE VIEW customer_spending AS
+SELECT customer_id, SUM(amount) AS total_spent
+FROM payment
+GROUP BY customer_id;
+
+SELECT customer_id, total_spent ---use view-------
+FROM customer_spending
+WHERE total_spent > 200;
+=>Explanation
+
+A view named customer_spending is created
+It stores the query that calculates total spending per customer
+No data is stored in the view
+
+When the view is used:
+
+The query runs again on the payment table
+It calculates total spending
+Then filters customers with spending greater than 200
+
+The result is shown like a table, even though no data is actually stored.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
