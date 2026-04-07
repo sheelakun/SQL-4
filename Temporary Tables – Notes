@@ -62,6 +62,45 @@ WHERE total_spent > 200;
 
 DROP TEMPORARY TABLE customer_total;
 
+-- 2 Store all payments above 5
+CREATE TEMPORARY TABLE high_payment AS
+SELECT customer_id, amount
+FROM payment
+WHERE amount > 5;
+
+select * from high_payment;
+
+drop temporary table high_payment;
+
+-- Top 5 customers by spending---------------------------------------
+create temporary table total_spending as
+select customer_id, SUM(amount) as total_amt
+from payment
+group by customer_id;
+
+select customer_id, total_amt
+from total_spending
+order by total_amt desc;
+
+
+
+-- Query 1: Customers Who Spent More Than 200
+--  Create Temporary Table
+CREATE TEMPORARY TABLE customer_total AS
+SELECT customer_id, SUM(amount) AS total_spent
+FROM payment
+GROUP BY customer_id;
+-- Use Temporary Table
+SELECT customer_id, total_spent
+FROM customer_total
+WHERE total_spent > 200;
+
+-- Drop table 
+
+DROP TEMPORARY TABLE customer_total;
+
+
+
 
 
 
