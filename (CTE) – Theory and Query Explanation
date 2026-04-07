@@ -1,0 +1,149 @@
+=> Definition
+
+A Common Table Expression (CTE) is a temporary named result set defined using the WITH clause, which can be referenced within a SELECT, INSERT, UPDATE,
+or DELETE statement.
+
+WITH cte_name AS (
+    SELECT ...
+)
+SELECT ...
+FROM cte_name;
+
+=> Why CTE is used
+
+CTEs were introduced to improve query structure over subqueries.
+
+=> Limitations of subqueries:
+Hard to read when nested
+Difficult to debug
+Cannot reuse logic easily
+
+=> Advantages of CTE:
+Improves readability
+Breaks query into logical steps
+Makes complex queries easier to manage
+Supports multi-step transformations
+
+=>Key Concept
+CTE = preparation step
+Main query = final result
+
+PRACTICE-QUESTIONS
+1-- Find films whose rental_rate is higher than average
+
+WITH avge_rent as (select AVG(rental_rate) as avg_rental
+from film)
+select title, rental_rate
+from film
+where rental_rate > (select avg_rental from  avge_rent);
+
+=> Explanation:
+The CTE calculates the average rental rate of all films and stores it as avg_value.
+The main query retrieves film titles and rental rates where the rental rate is greater than the calculated average.
+
+2=> -- Find customers who spent more than 200.
+WITH total_amt AS (
+SELECT customer_id, SUM(amount) AS spent_amt
+FROM payment
+GROUP BY customer_id
+)
+SELECT customer_id
+FROM total_amt
+WHERE spent_amt > 200;
+=> Explanation:The CTE calculates total spending for each customer using SUM and GROUP BY.
+The main query filters customers whose total spending exceeds 200.
+
+
+3=> Customers Who Rented More Than 5 Times
+WITH total_rentals AS (
+SELECT customer_id, COUNT(rental_id) AS rented_count
+FROM rental
+GROUP BY customer_id
+)
+SELECT customer_id, rented_count
+FROM total_rentals
+WHERE rented_count > 5;
+
+=> Explanation: The CTE counts the number of rentals for each customer.
+The main query selects customers whose rental count is greater than five.
+
+4: Top 5 Customers by Spending
+
+WITH spent_amt AS (
+SELECT customer_id, SUM(amount) AS spending_amt
+FROM payment
+GROUP BY customer_id
+)
+SELECT customer_id, spending_amt
+FROM spent_amt
+ORDER BY spending_amt DESC
+LIMIT 5;
+
+=>Explanation:
+The CTE calculates total spending for each customer.
+The main query orders the results in descending order of spending and returns the top five customers.
+This query demonstrates ranking using ORDER BY and LIMIT.
+
+=>5: Films with More Than 3 Copies in Inventory
+WITH film_num AS (
+    SELECT f.film_id, f.title, COUNT(i.inventory_id) AS film_count
+    FROM film f
+    JOIN inventory i ON f.film_id = i.film_id
+    GROUP BY f.film_id, f.title
+)
+SELECT film_id, title, film_count
+FROM film_num
+WHERE film_count > 3;
+
+=>Explanation:
+The CTE joins the film and inventory tables and counts the number of inventory records for each film.
+Each row in the inventory table represents one copy of a film.
+The main query filters films that have more than three copies.
+
+=>6: Customers Whose Spending Is Above Average
+
+WITH customer_total AS (
+SELECT customer_id, SUM(amount) AS total_spent
+FROM payment
+GROUP BY customer_id
+),
+avg_spending AS (
+SELECT AVG(total_spent) AS avg_amt
+FROM customer_total
+)
+SELECT customer_id, total_spent
+FROM customer_total
+WHERE total_spent > (
+    SELECT avg_amt FROM avg_spending
+);
+
+=>Explanation:
+The first CTE calculates total spending per customer.
+The second CTE calculates the average of these totals.
+The main query selects customers whose total spending exceeds the average.
+This is an example of a multi-step query where one aggregation depends on another.
+
+6. Key Concepts
+A CTE behaves like a temporary table within a query
+It allows separation of calculation and filtering logic
+It is particularly useful for aggregation and multi-step queries
+Multiple CTEs can be used for layered calculations
+It improves readability and maintainability of SQL queries
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
