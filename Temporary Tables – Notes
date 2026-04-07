@@ -1,6 +1,7 @@
 1. Definition
 
-A temporary table is a table created in the database to store data temporarily during a session. It behaves like a regular table but is automatically removed when the session ends.
+A temporary table is a table created in the database to store data temporarily during a session. It behaves like a regular table
+but is automatically removed when the session ends.
 
 2. Purpose
 
@@ -37,7 +38,7 @@ Data is stored temporarily and not persisted
 6. Scope and Access
 Temporary tables are session-specific
 Other users or sessions on the same server cannot access them
-For shared access, permanent tables or views must be used
+For shared access, permanent tables or (views) must be used
 
 practice_queries
 
@@ -60,6 +61,9 @@ WHERE total_spent > 200;
  -- Drop table ------------------------------------------------------
 
 DROP TEMPORARY TABLE customer_total;
+
+
+
 
 
 
