@@ -1,0 +1,85 @@
+1. Definition
+
+A temporary table is a table created in the database to store data temporarily during a session. It behaves like a regular table but is automatically removed when the session ends.
+
+2. Purpose
+
+Temporary tables are used to:
+
+Store intermediate query results
+Avoid recalculating the same data multiple times
+Simplify complex queries by breaking them into steps
+Enable reuse of data across multiple queries
+
+3. Syntax
+Create Temporary Table
+CREATE TEMPORARY TABLE table_name AS
+
+SELECT ...
+Query Temporary Table
+
+SELECT * FROM table_name;
+
+Drop Temporary Table (optional)
+DROP TEMPORARY TABLE table_name;
+
+4. Usage Workflow
+Create the temporary table using a SELECT query
+Use the table in one or more subsequent queries
+The table is automatically removed at the end of the session
+
+5. Key Characteristics
+Exists only during the database session
+Accessible only within the session in which it is created
+Not visible to other users or connections
+Data is stored temporarily and not persisted
+
+6. Scope and Access
+Temporary tables are session-specific
+Other users or sessions on the same server cannot access them
+For shared access, permanent tables or views must be used
+
+practice_queries
+
+--  Create Temporary Table---------------------------------------------------------------
+CREATE TEMPORARY TABLE customer_total AS     --------This table now exists separately, like a real table (but temporary)-----------------------
+SELECT customer_id, SUM(amount) AS total_spent
+FROM payment
+GROUP BY customer_id;
+
+=>Explaination
+Takes data from the payment table
+Groups it by customer_id
+Calculates total spending using SUM(amount)
+Stores the result in a new temporary table called customer_total
+
+-- Use Temporary Table--------------------------------------------
+SELECT customer_id, total_spent
+FROM customer_total
+WHERE total_spent > 200;
+ -- Drop table ------------------------------------------------------
+
+DROP TEMPORARY TABLE customer_total;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
