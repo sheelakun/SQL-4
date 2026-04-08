@@ -51,7 +51,13 @@ CREATE INDEX idx_amout
 ON payment(amount);
 
 select * from payment where amount > 3;
+-----------------------------------------------
+CREATE INDEX idx_customer_amount
+ON payment(customer_id, amount);
 
+SELECT customer_id, amount
+FROM payment
+WHERE customer_id = 1 AND amount > 5;
 
 
 
