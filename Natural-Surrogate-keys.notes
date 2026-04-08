@@ -20,3 +20,29 @@ Natural keys can change.
 Surrogate keys do not change.
 
 ----------------------------------------------------
+use sakila;
+-- Create table using Natural Key
+
+-- Create a table employee where:
+-- email is the primary key
+-- name is normal column
+
+create table employee( email varchar(100) primary key ,
+name varchar(50));
+
+INSERT INTO employee VALUES ('sk@gmail.com', 'John');
+
+select * from employee ; 
+
+-- Create table using Surrogate Key
+CREATE TABLE employees (
+employee_id INT AUTO_INCREMENT PRIMARY KEY,
+email VARCHAR(100) UNIQUE,
+name VARCHAR(50)
+);
+select * from employees;
+
+INSERT INTO employees (email, name)
+VALUES ('sh.aa2gmail.com', 'sk');
+
+select * from employees;
