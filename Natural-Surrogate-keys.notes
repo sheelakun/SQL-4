@@ -1,0 +1,22 @@
+Natural Key
+A natural key is a column that comes from real-world data and already exists.
+It has meaning in the business.
+
+Example: email, SSN, passport number
+It is easy to understand, but it can change and may not always be reliable.
+------------------------------------------------------------------------------------------
+Surrogate Key
+A surrogate key is a system-generated value used to identify each row.
+It has no real-world meaning.
+Example: auto-increment ID
+It is simple, always unique, and does not change.
+----------------------------------------------------------------------------------------------
+Difference
+
+A natural key comes from real data and has meaning.
+A surrogate key is created by the system and has no meaning.
+---------------------------------------------------------------------------------------------
+Natural keys can change.
+Surrogate keys do not change.
+
+----------------------------------------------------
