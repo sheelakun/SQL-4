@@ -1,0 +1,146 @@
+What is a Stored Procedure?
+
+A stored procedure is a saved SQL program inside the database.
+-------------------------------------------------------------------------
+A function you write once
+Store in DB
+Run anytime
+-------------------------------------------------------------------------------
+Why we use it
+Instead of writing the same query again and again:
+SELECT * FROM payment WHERE amount > 5;
+You save it once as a procedure and just call it.
+-------------------------------------------------------------------------------
+Benefits:
+Reusable
+Faster execution (precompiled)
+Cleaner code
+Better security (hide logic)
+-------------------------------------------------------------------------------------------
+Basic Structure
+DELIMITER //
+
+CREATE PROCEDURE procedure_name()
+BEGIN
+    -- SQL queries
+END //
+
+DELIMITER ;
+----------------------------------------------------------------------------------------------------
+DELIMITER //
+CREATE PROCEDURE get_all_customers()
+BEGIN
+SELECT * FROM customer;
+END //
+DELIMITER ;
+---------------------------------
+call get_all_customers()
+-----------------------------------------------------------------------------------------------------
+Types of Parameters 
+1. IN (most used)
+Input value
+You pass data into procedure
+IN cust_id INT
+---------------------------------------------
+2. OUT
+Returns value back
+OUT total INT
+-------------------------------------------
+3. INOUT
+Both input + output
+---------------------------------------------
+-- 1. Create procedure to get all films
+DELIMITER //
+CREATE PROCEDURE all_film()
+BEGIN
+SELECT * FROM film;
+END //
+
+DELIMITER ;
+call all_film()
+
+This procedure retrieves all records from the film table.
+It does not require any input parameter because the query is fixed and always returns the complete dataset.
+-------------------------------------------------------------------------------------------------------------------------------------------------
+-- 2. Create procedure to get payments > given amount
+DELIMITER //
+CREATE PROCEDURE get_payment(IN min_amount DECIMAL(5,2)) -- in paramater needed to add the input 
+BEGIN
+    SELECT customer_id, amount
+    FROM payment
+    WHERE amount > min_amount;
+END //
+
+DELIMITER ;
+CALL get_payment (6)
+
+Explanation:
+This procedure retrieves payment records where the amount is greater than a specified value.
+The IN parameter allows the user to pass a value at runtime, making the query dynamic.
+----------------------------------------------------------------------------------------------------------------------------------
+-- 3. Create procedure to count total customers 
+DELIMITER //     -- no need of any parameter 
+CREATE PROCEDURE get_total_custS ()
+BEGIN
+SELECT COUNT(*) AS total_customers FROM CUSTOMER;
+END//
+DELIMITER ;
+CALL get_total_custS();
+
+Explanation:
+This procedure retrieves payment records where the amount is greater than a specified value.
+The IN parameter allows the user to pass a value at runtime, making the query dynamic.
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Create procedure using OUT to return total revenue
+
+DELIMITER //
+CREATE PROCEDURE get_total_revenue(OUT total_revenue DECIMAL(10,2))
+BEGIN
+SELECT SUM(amount) INTO total_revenue
+FROM payment;
+END //
+
+DELIMITER ;
+
+CALL get_total_revenue(@rev);
+SELECT @rev;
+
+Explanation:
+This procedure calculates total revenue using the SUM function.
+The result is stored in the OUT parameter using INTO, and then assigned to a user-defined variable (@rev) when the procedure is called.
+The value can be accessed outside the procedure using SELECT @rev.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
