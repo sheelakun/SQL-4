@@ -1,0 +1,65 @@
+What is Indexing?
+
+Indexing is used to improve the speed of data retrieval in a table.
+
+--Instead of scanning the entire table,
+the database uses an index to quickly locate data.
+--------------------------------------------------------------------------
+Real understanding:
+Without index → database checks every row
+With index → database jumps directly to required data
+-----------------------------------------------------------------------------
+--CLUSTERED INDEX
+Definition:
+A clustered index defines the physical order of data in the table.
+-----------------------------
+Key Points:
+Data is stored in sorted order
+Only one clustered index per table
+Usually created on the primary key
+Faster for range queries (BETWEEN, ORDER BY)
+--------------------------------------------------
+Simple understanding:
+The table itself is arranged based on this index.
+So the data is already sorted and easy to access.
+
+--NON-CLUSTERED INDEX
+Definition:
+A non-clustered index is a separate structure that stores column values and references (pointers) to the actual data.
+------------------------------------
+Key Points:
+Data in table is not sorted
+Multiple non-clustered indexes allowed
+------------------------------------------
+Contains:
+Indexed column
+Pointer to actual row
+--------------------------------
+Simple understanding:
+It does not change the table.
+It just helps the database find where the data is located.
+-----------------------------------------------------------------------------------------------------------
+-- Create index on customer_id
+CREATE INDEX idx_customer_id
+on customer (customer_id);
+
+select * from customer where customer_id = 2;
+
+-- Create index on payment amount
+
+CREATE INDEX idx_amout
+ON payment(amount);
+
+select * from payment where amount > 3;
+
+
+
+
+
+
+
+
+
+
+
+
