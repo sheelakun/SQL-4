@@ -3,7 +3,6 @@ A natural key is a column that comes from real-world data and already exists.
 It has meaning in the business.
 
 Example: email, SSN, passport number
-It is easy to understand, but it can change and may not always be reliable.
 ------------------------------------------------------------------------------------------
 Surrogate Key
 A surrogate key is a system-generated value used to identify each row.
